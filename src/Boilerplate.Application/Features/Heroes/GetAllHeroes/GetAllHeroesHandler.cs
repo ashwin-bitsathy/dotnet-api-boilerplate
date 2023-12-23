@@ -22,10 +22,10 @@ public class GetAllHeroesHandler : IRequestHandler<GetAllHeroesRequest, Paginate
     {
         var heroes = _context.Heroes
             .WhereIf(!string.IsNullOrEmpty(request.Name), x => EF.Functions.Like(x.Name, $"%{request.Name}%"))
+            .WhereIf(!string.IsNullOrEmpty(request.Type), x => EF.Functions.Like(x.Name, $"%{request.Type}%"))
             .WhereIf(!string.IsNullOrEmpty(request.Nickname), x => EF.Functions.Like(x.Nickname!, $"%{request.Nickname}%"))
             .WhereIf(request.Age != null, x => x.Age == request.Age)
             .WhereIf(request.HeroType != null, x => x.HeroType == request.HeroType)
-            .WhereIf(!string.IsNullOrEmpty(request.Team), x => x.Team == request.Team)
             .WhereIf(!string.IsNullOrEmpty(request.Individuality), x => EF.Functions.Like(x.Individuality!, $"%{request.Individuality}%"));
         return await heroes.ProjectToType<GetHeroResponse>()
             .OrderBy(x => x.Name)

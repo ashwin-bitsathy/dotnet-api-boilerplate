@@ -80,6 +80,6 @@ app.MapGroup("api/identity")
     .WithTags("Identity")
     .MapIdentityApi<ApplicationUser>();
 
-await app.Migrate();
+// await app.Migrate();
 
 await app.RunAsync();
